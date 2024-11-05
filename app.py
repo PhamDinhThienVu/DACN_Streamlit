@@ -85,37 +85,44 @@ def main():
     for each in assigned_class:
       assigned_class_id.append(coco_class_names.index(each))
 
-"""
-   # Kiểm tra xem ảnh đã được tải trong session_state chưa
-  if 'default_image' not in st.session_state:
-        # Tải ảnh mặc định khi ứng dụng khởi chạy lần đầu
-      image_path = "./images/test_giaoThong01.jpg"  # Đường dẫn ảnh mặc định
-      if os.path.exists(image_path):
-          st.session_state.default_image = Image.open(image_path)
-      else:
-          st.session_state.default_image = None
-          st.sidebar.error("Không tìm thấy ảnh mặc định.")
-"""
-    # Hiển thị ảnh mặc định trong sidebar
-  # if st.session_state.default_image:
-  #     st.sidebar.text("Ảnh mặc định:")
-  #     st.sidebar.image(st.session_state.default_image, caption="Ảnh giao thông", use_column_width=True)
 
+    
 
 
   ## Hình ảnh đầu vào
   image_file_buffer = st.sidebar.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
-  
+
+
+ 
   if image_file_buffer is not None:
-    # Mở hình ảnh và hiển thị
-    image = Image.open(image_file_buffer)
-    st.sidebar.text("Input Image")
-    st.sidebar.image(image, caption='Uploaded Image', use_column_width=True)
-  elif 'input_image' not in st.session_state:
-      # Nếu không có ảnh tải lên thì sử dụng ảnh mặc định
-      st.session_state.input_image = st.session_state.default_image
-      st.sidebar.text("Default Image")
-      st.sidebar.image(st.session_state.input_image, caption='Default Image', use_column_width=True)
+      try:
+           # Đảm bảo rằng image_file_buffer là một đối tượng hợp lệ
+            image = Image.open(image_file_buffer)
+            st.sidebar.text("Input Image")
+            st.sidebar.image(image, caption='Uploaded Image', use_column_width=True)
+            # Resize ảnh nếu cần
+            image_resized = image.resize((640, 640))
+
+            if st.sidebar.button("Process"):   
+            # Run YOLO model on the uploaded image
+                with st.spinner("Processing... Please wait."):
+                    class_counts, annotated_img = detect_and_count_objects(model, image, confident)
+      
+                    if class_counts is None:
+                      st.warning("No objects detected! Maybe cause of threshold, check it!!!")
+                    else:
+            # Show processed image with bounding boxes
+                      st.image(annotated_img, caption="Processed Image with Detected Objects", use_column_width=True)
+            # Show object counts
+                      st.write("### Object Counts by Class")
+                      object_count_df = pd.DataFrame(list(class_counts.items()), columns=["Class", "Count"])
+                      st.dataframe(object_count_df)     
+            
+      
+      except Exception as e:
+            st.error(f"An error occurred while processing the image: {e}")
+  else:
+      st.warning("Please upload an image to continue.")
 
 
 
