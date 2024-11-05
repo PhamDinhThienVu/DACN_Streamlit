@@ -1,8 +1,9 @@
 streamlit
 Pillow
-ultralytics
 numpy
 pandas
-opencv-python
 matplotlib
 torch
+opencv-python-headless>=4.5.0
+torch>=2.0.0
+ultralytics>=8.0.0
