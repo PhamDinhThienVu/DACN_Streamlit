@@ -124,34 +124,6 @@ def main():
   else:
       st.warning("Please upload an image to continue.")
 
-
-
-
-  # Kiểm tra có ảnh đầu vào (từ upload hoặc ảnh mặc định)
-  if st.session_state.input_image is not None:
-      # Nếu có ảnh đầu vào thì hiển thị nút "Process"
-      # --- Bổ sung nút "Process" ---
-    if st.sidebar.button("Process"):   
-            # Run YOLO model on the uploaded image
-        with st.spinner("Processing... Please wait."):
-                # Nhận diện và đếm số lượng object mỗi class
-          image = Image.open(image_file_buffer)
-          image_resized = image.resize((640, 640))
-          class_counts, annotated_img = detect_and_count_objects(model, image, confident)
-      
-        if class_counts is None:
-          st.warning("No objects detected! Maybe cause of threshold, check it!!!")
-        else:
-            # Show processed image with bounding boxes
-          st.image(annotated_img, caption="Processed Image with Detected Objects", use_column_width=True)
-            # Show object counts
-          st.write("### Object Counts by Class")
-          object_count_df = pd.DataFrame(list(class_counts.items()), columns=["Class", "Count"])
-          st.dataframe(object_count_df)     
-
-  else:
-      st.sidebar.text("No image to process!")
-
 if __name__ == '__main__':
   try:
     main()
