@@ -18,7 +18,7 @@ def load_model(model_path="./models/yolov9e.pt"):
 
 def main():
   st.title("Detect and Counting Object In An Image")
-
+  st.text("(For mobile) Click to the arow in the left coner to open the sidebar, choose ur options, close the sidebar and see the result ")
   st.sidebar.title("Settings")
 
 
