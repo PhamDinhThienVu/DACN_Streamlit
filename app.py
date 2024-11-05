@@ -85,7 +85,7 @@ def main():
     for each in assigned_class:
       assigned_class_id.append(coco_class_names.index(each))
 
-
+"""
    # Kiểm tra xem ảnh đã được tải trong session_state chưa
   if 'default_image' not in st.session_state:
         # Tải ảnh mặc định khi ứng dụng khởi chạy lần đầu
@@ -95,7 +95,7 @@ def main():
       else:
           st.session_state.default_image = None
           st.sidebar.error("Không tìm thấy ảnh mặc định.")
-
+"""
     # Hiển thị ảnh mặc định trong sidebar
   # if st.session_state.default_image:
   #     st.sidebar.text("Ảnh mặc định:")
@@ -106,9 +106,6 @@ def main():
   ## Hình ảnh đầu vào
   image_file_buffer = st.sidebar.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
   
-   # Tải mô hình ngay khi ứng dụng khởi chạy
-  model = load_model()
-
   if image_file_buffer is not None:
     # Mở hình ảnh và hiển thị
     image = Image.open(image_file_buffer)
