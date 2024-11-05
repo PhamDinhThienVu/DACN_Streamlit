@@ -140,6 +140,7 @@ def main():
             # Run YOLO model on the uploaded image
         with st.spinner("Processing... Please wait."):
                 # Nhận diện và đếm số lượng object mỗi class
+          image = Image.open(image_file_buffer)
           image_resized = image.resize((640, 640))
           class_counts, annotated_img = detect_and_count_objects(model, image, confident)
       
