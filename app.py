@@ -5,7 +5,7 @@ from ultralytics import YOLO
 from functions.detected_image import *;
 import torch
 import os
-def load_model(model_path=".\models\yolov9e.pt"):
+def load_model(model_path="./models/yolov9e.pt"):
     # Kiểm tra xem máy tính có GPU không
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # Load model và chuyển sang GPU nếu có
@@ -38,13 +38,13 @@ def main():
 
     # Cập nhật đường dẫn mô hình tương ứng
   if model_choice == "YOLOv9e":
-    model_path = ".\models\yolov9e.pt"  # Thay bằng đường dẫn tới model 
+    model_path = "./models/yolov9e.pt"  # Thay bằng đường dẫn tới model 
   elif model_choice == "YOLOv9m":
-    model_path = ".\models\yolov9m.pt"  # Thay bằng đường dẫn tới model 
+    model_path = "./models/yolov9m.pt"  # Thay bằng đường dẫn tới model 
   elif model_choice == "YOLOv9Custom":
-    model_path = ".\models\yolov9e.pt"  # Thay bằng đường dẫn tới model 
+    model_path = "./models/yolov9e.pt"  # Thay bằng đường dẫn tới model 
   else:
-    model_path = ".\models\yolov9e.pt"  # Đường dẫn tới mô hình tùy chỉnh nếu có
+    model_path = "./models/yolov9e.pt"  # Đường dẫn tới mô hình tùy chỉnh nếu có
 
   # Tải mô hình
   # Kiểm tra nếu mô hình chưa được tải trong session_state, nếu chưa thì tải lại mô hình
