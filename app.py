@@ -21,15 +21,6 @@ def main():
 
   st.sidebar.title("Settings")
 
-  st.markdown(
-  """
-  <style>
-  [data-testid = "stSidebar"][aria-expanded = "true"] > div:first-child{width: 400px};
-  [data-testid="stSidebar"][aria-expanded="false"] > div:first-child{width: 400px; margin-left: -400px};
-  </style>
-  """,
-  unsafe_allow_html = True
-  )
 
   st.sidebar.markdown("---")
 
