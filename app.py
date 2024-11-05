@@ -98,7 +98,7 @@ def main():
    # Kiểm tra xem ảnh đã được tải trong session_state chưa
   if 'default_image' not in st.session_state:
         # Tải ảnh mặc định khi ứng dụng khởi chạy lần đầu
-      image_path = ".\\images\\test_giaoThong01.jpg"  # Đường dẫn ảnh mặc định
+      image_path = "./images/test_giaoThong01.jpg"  # Đường dẫn ảnh mặc định
       if os.path.exists(image_path):
           st.session_state.default_image = Image.open(image_path)
       else:
