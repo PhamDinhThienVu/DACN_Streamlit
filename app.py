@@ -33,7 +33,7 @@ def main():
   elif model_choice == "YOLOv9m":
     model_path = "./models/yolov9m.pt"  # Thay bằng đường dẫn tới model 
   elif model_choice == "YOLOv9Custom":
-    model_path = "./models/yolov9e.pt"  # Thay bằng đường dẫn tới model 
+    model_path = "./models/new-best.pt"  # Thay bằng đường dẫn tới model 
   else:
     model_path = "./models/yolov9e.pt"  # Đường dẫn tới mô hình tùy chỉnh nếu có
 
