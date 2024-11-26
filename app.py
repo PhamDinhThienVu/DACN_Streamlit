@@ -52,7 +52,7 @@ def main():
   confident = st.sidebar.slider('Confidence Score: ', min_value = 0.0, max_value=1.0, value = 0.25)
   st.sidebar.markdown("---")
   
-  
+
   ##Checkbox 
   # save_img = st.sidebar.checkbox("Save Images")
   # eable_GPU = st.sidebar.checkbox("Enable GPU")
@@ -61,23 +61,12 @@ def main():
   
   ##Custom class for use who can choose
   assigned_class_id = []
-  coco_class_names = [
-      'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck',
-      'boat', 'traffic light', 'fire hydrant', 'N/A', 'stop sign', 'parking meter', 
-      'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 
-      'zebra', 'giraffe', 'N/A', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase',
-      'frisbee', 'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove',
-      'skateboard', 'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 
-      'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot',
-      'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed', 'dining table',
-      'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven',
-      'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier',
-      'toothbrush'
-  ]
+  # Lấy danh sách lớp từ mô hình
+  class_names = list(model.names.values())  # Lấy tên các lớp từ mô hình
   if custom_classes:
-    assigned_class = st.sidebar.multiselect("Select The Custom Classes", list(coco_class_names), default = coco_class_names)
+    assigned_class = st.sidebar.multiselect("Select The Custom Classes", list(class_names), default = class_names)
     for each in assigned_class:
-      assigned_class_id.append(coco_class_names.index(each))
+      assigned_class_id.append(class_names.index(each))
 
 
     
@@ -96,11 +85,11 @@ def main():
             st.sidebar.image(image, caption='Uploaded Image', use_column_width=True)
             # Resize ảnh nếu cần
             image_resized = image.resize((640, 640))
-
+            
             if st.sidebar.button("Process"):   
             # Run YOLO model on the uploaded image
                 with st.spinner("Processing... Please wait."):
-                    class_counts, annotated_img = detect_and_count_objects(model, image, confident)
+                    class_counts, annotated_img = detect_and_count_objects(model, image, confident, assigned_class_id)
       
                     if class_counts is None:
                       st.warning("No objects detected! Maybe cause of threshold, check it!!!")

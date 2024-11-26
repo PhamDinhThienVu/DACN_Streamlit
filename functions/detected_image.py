@@ -16,12 +16,12 @@ def generate_class_colors(num_classes):
         colors.append(tuple(color))
     return colors
 
-def detect_and_count_objects(model, image, confidence_threshold=0.25):
+def detect_and_count_objects(model, image, confidence_threshold=0.25, classList=None):
     """
     Nhận đầu vào là ảnh và threshold, trả về ảnh đã bounding box và dataframe đếm số lượng object mỗi class.
     """
     # Dự đoán bounding boxes
-    results = model.predict(source=image, conf=confidence_threshold)
+    results = model.predict(source=image, conf=confidence_threshold, classes=classList)
     results_df = results[0].to_df()
 
 
