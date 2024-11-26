@@ -12,37 +12,29 @@ def load_model(model_path="./models/yolov9e.pt"):
     model = YOLO(model_path).to(device)
     return model
 
-
-
-
-
 def main():
   st.title("Detect and Counting Object In An Image")
   st.text("(For mobile) Click to the arow in the left coner to open the sidebar, choose ur options, close the sidebar and see the result ")
   st.sidebar.title("Settings")
 
-
   st.sidebar.markdown("---")
-
-   # Cung cấp tùy chọn cho người dùng để chọn mô hình
+  # Cung cấp tùy chọn cho người dùng để chọn mô hình
   model_choice = st.sidebar.selectbox("Choose Model", ["YOLOv9e", "YOLOv9m", "YOLOv9Custom", "YOLOv9PretrainCustom"])
-
-    # Cập nhật đường dẫn mô hình tương ứng
+  # Cập nhật đường dẫn mô hình tương ứng
   if model_choice == "YOLOv9e":
     model_path = "./models/yolov9e.pt"  # Thay bằng đường dẫn tới model 
   elif model_choice == "YOLOv9m":
     model_path = "./models/yolov9m.pt"  # Thay bằng đường dẫn tới model 
   elif model_choice == "YOLOv9Custom":
-    model_path = "./models/new-best.pt"  # Thay bằng đường dẫn tới model 
+    model_path = "./models/yolov9_custom.pt"  # Thay bằng đường dẫn tới model 
   else:
-    model_path = "./models/yolov9e.pt"  # Đường dẫn tới mô hình tùy chỉnh nếu có
+    model_path = "./models/yolov9_pretrain.pt"  # Đường dẫn tới mô hình tùy chỉnh nếu có
 
   # Tải mô hình
   # Kiểm tra nếu mô hình chưa được tải trong session_state, nếu chưa thì tải lại mô hình
   if 'model' not in st.session_state or st.session_state.model_path != model_path:
       st.session_state.model = load_model(model_path)
       st.session_state.model_path = model_path  # Lưu đường dẫn mô hình vào session state
-
   model = st.session_state.model  # Lấy mô hình đã tải từ session state
 
   # Thông tin mô hình
@@ -54,10 +46,12 @@ def main():
   st.sidebar.text(f"Number of Classes: {len(model.names)}")
   st.sidebar.text(f"Model Details: {model.info()}")
 
-  st.sidebar.markdown("---")
 
+
+  st.sidebar.markdown("---")
   confident = st.sidebar.slider('Confidence Score: ', min_value = 0.0, max_value=1.0, value = 0.25)
   st.sidebar.markdown("---")
+  
   
   ##Checkbox 
   # save_img = st.sidebar.checkbox("Save Images")
