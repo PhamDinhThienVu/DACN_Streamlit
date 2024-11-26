@@ -5,7 +5,7 @@ from ultralytics import YOLO
 from functions.detected_image import *;
 import torch
 import os
-def load_model(model_path=".\models\yolov9e.pt"):
+def load_model(model_path="./models/yolov9e.pt"):
     # Kiểm tra xem máy tính có GPU không
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # Load model và chuyển sang GPU nếu có
@@ -18,18 +18,9 @@ def load_model(model_path=".\models\yolov9e.pt"):
 
 def main():
   st.title("Detect and Counting Object In An Image")
-
+  st.text("(For mobile) Click to the arow in the left coner to open the sidebar, choose ur options, close the sidebar and see the result ")
   st.sidebar.title("Settings")
 
-  st.markdown(
-  """
-  <style>
-  [data-testid = "stSidebar"][aria-expanded = "true"] > div:first-child{width: 400px};
-  [data-testid="stSidebar"][aria-expanded="false"] > div:first-child{width: 400px; margin-left: -400px};
-  </style>
-  """,
-  unsafe_allow_html = True
-  )
 
   st.sidebar.markdown("---")
 
@@ -38,13 +29,13 @@ def main():
 
     # Cập nhật đường dẫn mô hình tương ứng
   if model_choice == "YOLOv9e":
-    model_path = ".\models\yolov9e.pt"  # Thay bằng đường dẫn tới model 
+    model_path = "./models/yolov9e.pt"  # Thay bằng đường dẫn tới model 
   elif model_choice == "YOLOv9m":
-    model_path = ".\models\yolov9m.pt"  # Thay bằng đường dẫn tới model 
+    model_path = "./models/yolov9m.pt"  # Thay bằng đường dẫn tới model 
   elif model_choice == "YOLOv9Custom":
-    model_path = ".\models\yolov9e.pt"  # Thay bằng đường dẫn tới model 
+    model_path = "./models/yolov9e.pt"  # Thay bằng đường dẫn tới model 
   else:
-    model_path = ".\models\yolov9e.pt"  # Đường dẫn tới mô hình tùy chỉnh nếu có
+    model_path = "./models/yolov9e.pt"  # Đường dẫn tới mô hình tùy chỉnh nếu có
 
   # Tải mô hình
   # Kiểm tra nếu mô hình chưa được tải trong session_state, nếu chưa thì tải lại mô hình
@@ -95,66 +86,43 @@ def main():
       assigned_class_id.append(coco_class_names.index(each))
 
 
-   # Kiểm tra xem ảnh đã được tải trong session_state chưa
-  if 'default_image' not in st.session_state:
-        # Tải ảnh mặc định khi ứng dụng khởi chạy lần đầu
-      image_path = ".\\images\\test_giaoThong01.jpg"  # Đường dẫn ảnh mặc định
-      if os.path.exists(image_path):
-          st.session_state.default_image = Image.open(image_path)
-      else:
-          st.session_state.default_image = None
-          st.sidebar.error("Không tìm thấy ảnh mặc định.")
-
-    # Hiển thị ảnh mặc định trong sidebar
-  # if st.session_state.default_image:
-  #     st.sidebar.text("Ảnh mặc định:")
-  #     st.sidebar.image(st.session_state.default_image, caption="Ảnh giao thông", use_column_width=True)
-
+    
 
 
   ## Hình ảnh đầu vào
   image_file_buffer = st.sidebar.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
-  
-   # Tải mô hình ngay khi ứng dụng khởi chạy
-  model = load_model()
 
+
+ 
   if image_file_buffer is not None:
-    # Mở hình ảnh và hiển thị
-    image = Image.open(image_file_buffer)
-    st.sidebar.text("Input Image")
-    st.sidebar.image(image, caption='Uploaded Image', use_column_width=True)
-  elif 'input_image' not in st.session_state:
-      # Nếu không có ảnh tải lên thì sử dụng ảnh mặc định
-      st.session_state.input_image = st.session_state.default_image
-      st.sidebar.text("Default Image")
-      st.sidebar.image(st.session_state.input_image, caption='Default Image', use_column_width=True)
+      try:
+           # Đảm bảo rằng image_file_buffer là một đối tượng hợp lệ
+            image = Image.open(image_file_buffer)
+            st.sidebar.text("Input Image")
+            st.sidebar.image(image, caption='Uploaded Image', use_column_width=True)
+            # Resize ảnh nếu cần
+            image_resized = image.resize((640, 640))
 
-
-
-
-  # Kiểm tra có ảnh đầu vào (từ upload hoặc ảnh mặc định)
-  if st.session_state.input_image is not None:
-      # Nếu có ảnh đầu vào thì hiển thị nút "Process"
-      # --- Bổ sung nút "Process" ---
-    if st.sidebar.button("Process"):   
+            if st.sidebar.button("Process"):   
             # Run YOLO model on the uploaded image
-        with st.spinner("Processing... Please wait."):
-                # Nhận diện và đếm số lượng object mỗi class
-          image_resized = image.resize((640, 640))
-          class_counts, annotated_img = detect_and_count_objects(model, image, confident)
+                with st.spinner("Processing... Please wait."):
+                    class_counts, annotated_img = detect_and_count_objects(model, image, confident)
       
-        if class_counts is None:
-          st.warning("No objects detected! Maybe cause of threshold, check it!!!")
-        else:
+                    if class_counts is None:
+                      st.warning("No objects detected! Maybe cause of threshold, check it!!!")
+                    else:
             # Show processed image with bounding boxes
-          st.image(annotated_img, caption="Processed Image with Detected Objects", use_column_width=True)
+                      st.image(annotated_img, caption="Processed Image with Detected Objects", use_column_width=True)
             # Show object counts
-          st.write("### Object Counts by Class")
-          object_count_df = pd.DataFrame(list(class_counts.items()), columns=["Class", "Count"])
-          st.dataframe(object_count_df)     
-
+                      st.write("### Object Counts by Class")
+                      object_count_df = pd.DataFrame(list(class_counts.items()), columns=["Class", "Count"])
+                      st.dataframe(object_count_df)     
+            
+      
+      except Exception as e:
+            st.error(f"An error occurred while processing the image: {e}")
   else:
-      st.sidebar.text("No image to process!")
+      st.warning("Please upload an image to continue.")
 
 if __name__ == '__main__':
   try:
