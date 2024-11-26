@@ -1,10 +1,10 @@
 ultralytics
-opencv-python
 streamlit
-Pillow
 numpy
 pandas
 matplotlib
 torch
+Pillow
+opencv-python
 opencv-python-headless>=4.5.0
 

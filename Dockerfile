@@ -1,17 +1,26 @@
-# Sử dụng hình ảnh Python làm cơ sở
+# Sử dụng Python image
 FROM python:3.9-slim
 
-# Thiết lập thư mục làm việc trong container
+# Cài đặt các thư viện cần thiết cho OpenCV và đồ họa
+RUN apt-get update && apt-get install -y \
+    libgl1 \
+    libglvnd0 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Đặt thư mục làm việc
 WORKDIR /app
 
-# Sao chép toàn bộ mã nguồn vào container
+# Sao chép các tệp cần thiết vào container
 COPY . /app
 
-# Cài đặt các thư viện cần thiết
+# Cài đặt các phụ thuộc Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Mở port cho ứng dụng Streamlit
+# Mở cổng cho Flask hoặc Streamlit
 EXPOSE 8501
 
-# Lệnh để chạy ứng dụng Streamlit
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Chạy ứng dụng
+CMD ["streamlit", "run", "app.py"]
