@@ -1,14 +1,10 @@
-<<<<<<< HEAD
 ultralytics
 opencv-python
-=======
 streamlit
->>>>>>> afdce0ca0d9b2969412b4da4ee0049f34161d77b
 Pillow
 numpy
 pandas
 matplotlib
 torch
 opencv-python-headless>=4.5.0
-torch>=2.0.0
-ultralytics>=8.0.0
+
