@@ -4,6 +4,7 @@ matplotlib
 googledrivedownloader
 streamlit
 opencv-python-headless==4.8.0.76
+opencv-python
 torch
 ultralytics==8.0.70
 Pillow
