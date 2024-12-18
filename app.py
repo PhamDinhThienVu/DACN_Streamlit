@@ -5,6 +5,30 @@ from ultralytics import YOLO
 from functions.detected_image import *;
 import torch
 import os
+from google_drive_downloader import GoogleDriveDownloader as gdd
+
+model_files = {
+    "yolov9_custom.pt": "1rN0Z3y9ramnA21eNCj5aDo3QCJSMolLQ",  # Thay YOUR_FILE_ID_1 bằng ID Google Drive
+    "yolov9_pretrain.pt": "1Zq5oAHIIRL9Ov1gCRod-bGmdOdn4bclC",
+    "yolov9e.pt": "1gERgjMdPejtlqyfGzChH9DfpcjmzUH6z",
+    "yolov9m.pt": "1oqGJVcvdjbT52p2tPgOiiQCwp02jrYj0",
+}
+
+models_dir = "models"
+os.makedirs(models_dir, exist_ok=True)
+
+# Tải mô hình nếu chưa tồn tại
+for file_name, file_id in model_files.items():
+    file_path = os.path.join(models_dir, file_name)
+    if not os.path.exists(file_path):
+        print(f"Downloading {file_name}...")
+        gdd.download_file_from_google_drive(file_id=file_id, dest_path=file_path, unzip=False)
+        print(f"{file_name} downloaded successfully.")
+    else:
+        print(f"{file_name} already exists. Skipping download.")
+
+
+
 def load_model(model_path="./models/yolov9e.pt"):
     # Kiểm tra xem máy tính có GPU không
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
