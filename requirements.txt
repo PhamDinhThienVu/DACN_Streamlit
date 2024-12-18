@@ -3,9 +3,8 @@ pandas
 matplotlib
 googledrivedownloader
 streamlit
+opencv-python
 opencv-python-headless==4.8.0.74
-opencv-python
-ultralytics==8.0.70
 torch
+ultralytics==8.0.70
 Pillow
-opencv-python
