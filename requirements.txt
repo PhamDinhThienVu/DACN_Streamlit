@@ -7,5 +7,4 @@ matplotlib
 torch
 Pillow
 opencv-python
-
 googledrivedownloader
