@@ -1,4 +1,5 @@
 ultralytics
+opencv-python-headless==4.8.0.74
 streamlit
 numpy
 pandas
@@ -6,5 +7,5 @@ matplotlib
 torch
 Pillow
 opencv-python
-opencv-python-headless
+
 googledrivedownloader
