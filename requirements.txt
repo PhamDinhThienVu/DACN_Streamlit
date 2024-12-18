@@ -6,5 +6,6 @@ torch
 Pillow
 opencv-python
 googledrivedownloader
-ultralytics==8.0.70
 opencv-python-headless==4.8.0.74
+ultralytics==8.0.70
+
