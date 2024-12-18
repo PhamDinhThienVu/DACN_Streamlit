@@ -1,11 +1,10 @@
-streamlit
 numpy
 pandas
 matplotlib
+googledrivedownloader
+streamlit
+opencv-python-headless==4.8.0.74
+ultralytics==8.0.70
 torch
 Pillow
 opencv-python
-googledrivedownloader
-opencv-python-headless==4.8.0.74
-ultralytics==8.0.70
-
